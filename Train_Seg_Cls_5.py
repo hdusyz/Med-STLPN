@@ -16,7 +16,7 @@ from scipy.ndimage import gaussian_filter1d
 import pandas as pd
 from tqdm import tqdm  # Import tqdm
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score  # 新增分类指标导入
-from med_stlpn import Med_STLPN
+from models.mst_net import *
 
 from models.resganet import ResGANet101
 
@@ -77,7 +77,7 @@ def main():
             device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
             #model = model = SplitterNet().to(device)  # 模型需支持多任务输出：(seg_logits, cls)
             #model = Med_STLPN(train_set.num_cat).to(device)
-            model = UNETR().to(device)
+            model = mst_net().to(device)
             total_params = sum(p.numel() for p in model.parameters())
             print(f"Total parameters: {total_params}")
             train_loss_epoch, avg_val_loss, pre_ji, pre_dice, hd95, asd, val_acc, val_pre, val_recall, val_f1 = train(
