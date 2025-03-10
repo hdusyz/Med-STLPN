@@ -14,12 +14,8 @@ from utils import DiceLoss, metric_seg, cmp_3
 import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter1d
 import pandas as pd
-from modeltest.egeunet import *
 from tqdm import tqdm  # Import tqdm
-from muti_scale.MLTN import MTLN3D
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score  # 新增分类指标导入
-from med_stlpn import UNETR
-from testnew import *
 from med_stlpn import Med_STLPN
 
 from models.resganet import ResGANet101
