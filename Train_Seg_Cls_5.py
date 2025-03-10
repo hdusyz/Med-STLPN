@@ -35,7 +35,7 @@ subject_ids = csv_data['Subject ID'].unique()
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
-def ege_main():
+def main():
     # 初始化数据集
     #train_set = multitimedataset(csv_data, data_dir, seg_dir, text_data, normalize=True)
     train_set = SegmentandclassDataset(csv_data, data_dir, seg_dir, normalize=True)
@@ -372,4 +372,4 @@ torch.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
 torch.backends.cudnn.deterministic = True
     
-ege_main()
+main()
