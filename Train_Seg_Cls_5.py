@@ -18,7 +18,6 @@ from tqdm import tqdm  # Import tqdm
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score  # 新增分类指标导入
 from models.mst_net import *
 
-from models.resganet import ResGANet101
 
 # 数据路径
 csv_path = '/home/ocean/sy/MICCAI/dataset/merged_file.csv'  # 替换为你的 CSV 文件的路径
