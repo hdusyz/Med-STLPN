@@ -18,10 +18,8 @@ from modeltest.egeunet import *
 from tqdm import tqdm  # Import tqdm
 from muti_scale.MLTN import MTLN3D
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score  # 新增 auc 指标
-from med_stlpn import *
-# from testnew import *
+from models.mst_net import *
 
-from models.resganet import ResGANet101
 
 
 # 数据路径
@@ -71,7 +69,7 @@ def ege_main():
             )
 
             device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-            seg_model = mst_net_cls().to(device)
+            seg_model = mst_net_seg().to(device)
             state_dict = torch.load('/home/ocean/sy/MICCAI/Result/seg/seg_1_model.pth', map_location='cpu')
             seg_model.load_state_dict(state_dict)
             seg_model.eval()  # 固定为评估模式
@@ -80,7 +78,7 @@ def ege_main():
 
 
             #model = ConvRes([[64, 64, 64], [128, 128, 256], [256, 256, 256, 512]]).to(device)
-            cls_model = Med_STLPN_cls(train_set.num_cat).to(device)
+            cls_model = mst_net_cls(train_set.num_cat).to(device)
             
             # 修改训练函数返回参数
             train_loss_epoch, avg_val_loss, val_acc, val_pre, val_recall, val_f1 = train(
