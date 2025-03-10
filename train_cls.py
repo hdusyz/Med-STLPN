@@ -34,7 +34,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 
-def ege_main():
+def main():
     # 初始化数据集（保持不变）
     train_set = multitimedataset(csv_data, data_dir, seg_dir, text_data, normalize=True)
     cv = KFold(n_splits=4, random_state=42, shuffle=True)
@@ -280,4 +280,4 @@ torch.cuda.manual_seed_all(seed)
 torch.backends.cudnn.deterministic = True
     
 if __name__ == '__main__':
-    ege_main()
+    main()
