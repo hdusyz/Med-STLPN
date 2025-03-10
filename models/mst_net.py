@@ -457,7 +457,7 @@ class SpatioTemporalFusion(nn.Module):
         return fused
 
     
-class MST_NET(nn.Module):
+class MST_NET_seg(nn.Module):
     def __init__(self,categories, img_shape=(16, 512, 512), input_dim=1, output_dim=1, embed_dim=768, patch_size=(16,128,128), num_heads=4, dropout=0.1, num_special_tokens=2):
         super().__init__()
         self.input_dim = input_dim
@@ -616,33 +616,20 @@ class MST_NET(nn.Module):
         z6_t0 = z6_t0.transpose(-1, -2).view(-1, self.embed_dim, *self.patch_dim)
         z9_t0 = z9_t0.transpose(-1, -2).view(-1, self.embed_dim, *self.patch_dim)
         z12_t0 = z12_t0.transpose(-1, -2).view(-1, self.embed_dim, *self.patch_dim)
-        # #print('z12_view:',z12.shape)
         clsfeat_t0 = z12_t0
-        # #print(z12.shape)
         z12_t0 = self.stdm12(z12_t0)
-        # #print(z12.shape)
         z12_t0 = self.decoder12_upsampler(z12_t0)
-        # #print('z12_up:',z12.shape)
-        # #z12 = self.drf9(z12)
         z9_t0 = self.decoder9(z9_t0)
-        # #print(z9.shape)
         z9_t0 = self.stdm9(z9_t0)
-        # #print(z9.shape)
-        # #print('z9_decoder:',z9.shape)
         z9_t0 = self.decoder9_upsampler(torch.cat([z9_t0, z12_t0], dim=1))
-        # #z9 = self.drf6(z9)
-        # #print(z9.shape)
         z6_t0 = self.decoder6(z6_t0)
-        # #z6 = self.stdm6(z6)
+        z6 = self.stdm6(z6)
         z6_t0 = self.decoder6_upsampler(torch.cat([z6_t0, z9_t0], dim=1))
-        # #z3 = self.drf3(z3)
         # #print(z6.shape)
         z3_t0 = self.decoder3(z3_t0)
         # #z3 = self.stdm3(z3)
         
         z3_t0 = self.decoder3_upsampler(torch.cat([z3_t0, z6_t0], dim=1))
-        # #print(z3.shape)
-        # #z0 = self.drf0(z0)
         z0_t0 = self.decoder0(z0_t0)
         # #z0 = self.stdm0(z0)
         segout = self.decoder0_header(torch.cat([z0_t0, z3_t0], dim=1))
@@ -650,42 +637,22 @@ class MST_NET(nn.Module):
         #T1 branch
         z_t1 = self.transformer(t1)
         z0_t1, z3_t1, z6_t1, z9_t1, z12_t1 = t1, *z_t1
-        #print('z0 shape:',z0.shape)
-        #print('z3 shape:',z3.shape)
-        #print('z6 shape:',z6.shape) 
-        #print('z9 shape:',z9.shape)
-        #print('z12 shape:',z12.shape)
         z3_t1 = z3_t1.transpose(-1, -2).view(-1, self.embed_dim, *self.patch_dim)
         z6_t1 = z6_t1.transpose(-1, -2).view(-1, self.embed_dim, *self.patch_dim)
         z9_t1 = z9_t1.transpose(-1, -2).view(-1, self.embed_dim, *self.patch_dim)
         z12_t1 = z12_t1.transpose(-1, -2).view(-1, self.embed_dim, *self.patch_dim)
-        #print('z12_view:',z12.shape)
         clsfeat_t1 = z12_t1
-        #print(z12.shape)
         z12_t1 = self.stdm12(z12_t1)
-        #print(z12.shape)
         z12_t1 = self.decoder12_upsampler(z12_t1)
-        #print('z12_up:',z12.shape)
-        #z12 = self.drf9(z12)
         z9_t1 = self.decoder9(z9_t1)
-        #print(z9.shape)
         z9_t1 = self.stdm9(z9_t1)
-        #print(z9.shape)
-        #print('z9_decoder:',z9.shape)
         z9_t1 = self.decoder9_upsampler(torch.cat([z9_t1, z12_t1], dim=1))
-        #z9 = self.drf6(z9)
-        #print(z9.shape)
         z6_t1 = self.decoder6(z6_t1)
         #z6 = self.stdm6(z6)
         z6_t1 = self.decoder6_upsampler(torch.cat([z6_t1, z9_t1], dim=1))
-        #z3 = self.drf3(z3)
-        #print(z6.shape)
         z3_t1 = self.decoder3(z3_t1)
         #z3 = self.stdm3(z3)
-        
         z3_t1 = self.decoder3_upsampler(torch.cat([z3_t1, z6_t1], dim=1))
-        #print(z3.shape)
-        #z0 = self.drf0(z0)
         z0_t1 = self.decoder0(z0_t1)
         #z0 = self.stdm0(z0)
         segout1 = self.decoder0_header(torch.cat([z0_t1, z3_t1], dim=1))
@@ -693,21 +660,11 @@ class MST_NET(nn.Module):
         clsfeat_t1 = clsfeat_t1.detach()
 
         #class
-        #out0 = self.avg_pool(clsfeat_t0)
+        out0 = self.avg_pool(clsfeat_t0)
         out1 = self.avg_pool(clsfeat_t1)
-        #out0 = out0.view(out0.size(0), -1)
         out1 = out1.view(out1.size(0), -1)
-        #out0 = out0.unsqueeze(1)
-        #out1 = out1.unsqueeze(1)
-        #out = self.tepfusion(out0,out1)
-        #out = out.squeeze(1)
-        #out = self.jiangwei(out1)
-        #print(out.shape,x_categ.shape)
-        #fusion = self.CMAF(out, x_categ)
-        #fusion = torch.cat((out, x_categ),dim=1)
 
         clsout = self.clshead1(out1)
-        #print(clsout.shape)
 
         return segout, clsout
 
@@ -776,15 +733,12 @@ class MST_NET_cls(nn.Module):
         out1 = self.avg_pool(t1)
         out0 = out0.view(out0.size(0), -1)
         out1 = out1.view(out1.size(0), -1)
-        #print(out0.shape)
         out0 = out0.unsqueeze(1)
         out1 = out1.unsqueeze(1)
         out = self.tepfusion(out0,out1)
         out = out.squeeze(1)
         out = self.jiangwei(out)
         fusion = self.CMAF(out, x_categ)
-        print(fusion.shape)
-        #fusion = torch.cat((out, x_categ),dim=1)
 
         clsout = self.clshead1(fusion)
         return clsout
@@ -795,7 +749,7 @@ if __name__ =='__main__':
     y = torch.randn((1,1,16,512,512)).to(device)
     x = torch.randn((1,1,16,512,512)).to(device)
     text = torch.randn((1,256)).to(device)
-    model = Med_STLPN(categories=[0,2]).to(device)
+    model = mst_net_seg(categories=[0,2]).to(device)
     total_params = sum(p.numel() for p in model.parameters())
     print(f"Total parameters: {total_params}")
     p,o= model(y,x,text)
