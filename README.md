@@ -1,4 +1,4 @@
-# MST-NET: Multimodal SpatioTemporal Network for Pulmonary Nodule Segmentation and PrognosisMST-Net
+# MST-NET: Multimodal SpatioTemporal Network for Pulmonary Nodule Segmentation and Prognosis
 
 ![](https://img.shields.io/badge/-Github-181717?style=flat-square&logo=Github&logoColor=FFFFFF)
 ![](https://img.shields.io/badge/-Awesome-FC60A8?style=flat-square&logo=Awesome&logoColor=FFFFFF)
