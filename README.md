@@ -13,3 +13,4 @@ Overview of our MST-Net. It comprises three parts: (a) multimodal feature extrac
 ## Experiment result
 We compared our results with other state-of-the-art methods, and our results were better than any other comparison method. In summary, the MST-Net model, trained with a combination of multimodal data and spatiotemporal information, demonstrates superior performance in tasks of pulmonary nodule segmentation and prognosis compared to models trained using single-modality, single-time point, or planar data.
 
+![image](image/result.png)
