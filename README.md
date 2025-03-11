@@ -34,5 +34,9 @@ The dataset we use comes from the National Lung Screening Trial (NLST with the o
 ## Train
 * training for segmentation：
 ```
-python 
+python Train_Seg_5.py
+``` 
+* training for predication：
+```
+python train_cls.py
 ``` 
