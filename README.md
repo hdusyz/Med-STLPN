@@ -29,7 +29,7 @@ pip install -r requirements.txt
 ```
 
 ## Data Preparation
-The dataset we use comes from the National Lung Screening Trial (NLST with the original data available for download at https://cdas.cancer.gov/learn/nlst/images/.) initiated by the National Cancer Institute, which includes 150 participants annotated by doctors. Each participant must have at least two longitudinal CT scans and clinical data (age, gender, smoking status, screening results). The nodular malignant tumor was confirmed by pathological criteria, with a three-dimensional ROI size of 16 × 512 × 512. Perform five fold cross validation on the dataset in a 4:1 ratio.
+The dataset we use comes from the National Lung Screening Trial (NLST with the original data available for download at https://cdas.cancer.gov/learn/nlst/images/.) initiated by the National Cancer Institute, which includes 150 participants annotated by doctors. Each participant must have at least two longitudinal CT scans and clinical data (age, gender, smoking status, screening results). The nodular malignant tumor was confirmed by pathological criteria, with a three-dimensional size of 16 × 512 × 512. Perform five fold cross validation on the dataset in a 4:1 ratio.
 
 ## Train
 * training for segmentation：
